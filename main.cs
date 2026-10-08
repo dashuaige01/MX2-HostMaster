@@ -36,6 +36,8 @@ namespace 多设备管理系统
                 cmbSerialPort.Text = cmbSerialPort.Items[0].ToString(); // 显示第1个串口信息
 
             flpDevice.Controls.Clear(); // 清除设计器里残留的旧面板
+            UiStyle.EnableRoundCorners(flpDevice, 10, Color.FromArgb(80, 80, 80)); // 圆角描边
+            UiStyle.EnableRoundCorners(pnlDeviceControl, 10, Color.FromArgb(80, 80, 80)); // 圆角描边
         }
 
         private void get_Serial_port() // 获取电脑当前可用串口并更新下拉列表
@@ -263,20 +265,20 @@ namespace 多设备管理系统
         public byte[] SendAndReceive(byte[] data) // 发送数据帧并返回接受数据帧
         {
             if (!serialPort1.IsOpen) 
-            { // 1. 检查串口是否打开
+            { // 1. 检查串口是否打开 
                 return null;
             }
 
-            lock (_serialLock) { // 锁只在 main.cs 内部，外部碰不到
-                _dataReceivedEvent.Reset(); // 复位串口信号量
-                serialPort1.DiscardInBuffer(); // 清空串口数据缓存
-                serialPort1.Write(data, 0, data.Length); // 发送串口数据帧
+            lock (_serialLock) { // 锁只在 main.cs 内部，外部碰不到 
+                _dataReceivedEvent.Reset(); // 复位串口信号量 
+                serialPort1.DiscardInBuffer(); // 清空串口数据缓存 
+                serialPort1.Write(data, 0, data.Length); // 发送串口数据帧 
                 if (_dataReceivedEvent.WaitOne(200)) 
                 { // 等待接收到数据的信号量
-                    int len = serialPort1.BytesToRead; // 获取接收到的数据帧长度
-                    byte[] buff = new byte[len]; // 分配数据数组地址
-                    serialPort1.Read(buff, 0, len); // 获取数据帧
-                    return buff; // 返回数据帧
+                    int len = serialPort1.BytesToRead; // 获取接收到的数据帧长度 
+                    byte[] buff = new byte[len]; // 分配数据数组地址 
+                    serialPort1.Read(buff, 0, len); // 获取数据帧 
+                    return buff; // 返回数据帧 
                 }
                 return null;
             }

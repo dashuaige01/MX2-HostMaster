@@ -30,7 +30,7 @@ namespace 多设备管理系统
                     | ControlStyles.OptimizedDoubleBuffer // 双重冲区画面s
                     | ControlStyles.ResizeRedraw // 拉伸画面重新绘制
                     | ControlStyles.SupportsTransparentBackColor, true); // 
-            this.BackColor = Color.Transparent; // 核心：把控件背景设为真正的“透明”
+            this.BackColor = Color.Transparent;
 
             _sendFunc = sendFunc; // 发送函数
             DeviceAddress = address; // 从机设备地址
@@ -155,60 +155,29 @@ namespace 多设备管理系统
             }
         }
 
-
-        private static GraphicsPath CreateRoundRect(Rectangle r, int radius) // 绘制控件圆角
-    //    私有静态      返回类型      函数名称    圆角矩形总边界  圆角半径
-        {
-            int d = Math.Min(radius * 2, Math.Min(r.Width, r.Height)); // 圆角直径
-            var path = new GraphicsPath(); // 创建图形路径对象
-            // 左上角X坐标, 左上角Y坐标, 宽度, 高度, 起始角度, 扫过的角度
-            path.AddArc(r.X, r.Y, d, d, 180, 90); // 左上
-            path.AddArc(r.Right - d, r.Y, d, d, 270, 90); // 右上
-            path.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90); // 右下
-            path.AddArc(r.X, r.Bottom - d, d, d, 90, 90); // 左下
-            path.CloseFigure(); // 闭合图形
-            return path; // 返回绘制好的路径
-        }
-
         protected override void OnSizeChanged(EventArgs e) // 调整控件显示
-            //  重写父类       窗口大小改变时自动调用
+         //  重写父类       窗口大小改变时自动调用
         {
             System.Diagnostics.Debug.WriteLine("触发尺寸改变回调！"); // 加这句
             base.OnSizeChanged(e); // 调用父类的默认逻辑
-            var old = Region; // 保存控件当前的裁剪区域
-            using (var path = CreateRoundRect(ClientRectangle, CornerRadius))
-                Region = new Region(path); // 把四个直角"剪掉"
-            if (old != null) old.Dispose(); // 释放旧的非托管内存
+            UiStyle.ApplyRoundRegion(this, CornerRadius); // 圆角裁剪
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
-        //  重写父类             重写背景绘制
+        //  重写父类              重写背景绘制
         {
             base.OnPaintBackground(e); // 只需这一句，系统会自动帮你对齐、缩放并画出正确的父控件背景
+
+            var g = e.Graphics; // 拿到画布
+            g.SmoothingMode = SmoothingMode.AntiAlias; // 开启抗锯齿，让圆角和斜线平滑无锯齿
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e); // 调用父类逻辑，通常用来绘制里面的子控件（比如文本框、按钮）
-            var g = e.Graphics; // 拿到画布
-            g.SmoothingMode = SmoothingMode.AntiAlias; // 开启抗锯齿，让圆角和斜线平滑无锯齿
-
-            using (var path = CreateRoundRect(ClientRectangle, CornerRadius)) // 获取当前控件的圆角轮廓
-            {
-                g.SetClip(path); // 限制绘制区域
-                // 顶部高光渐变（模拟玻璃反光）
-                using (var b = new SolidBrush(Color.FromArgb(50, 255, 255, 255)))
-                {
-                    g.FillPath(b, path); // 把渐变填充到圆角形状里
-                }
-
-                // 玻璃描边
-                using (var pen = new Pen(Color.FromArgb(200, 255, 255, 255), 2f))
-                {
-                    g.DrawPath(pen, path);
-                }
-                g.ResetClip(); // 恢复成原来的画板剪裁区域
-            }
+            UiStyle.PaintGlassHighlight(e, this, CornerRadius); // 顶部高光
+            UiStyle.DrawRoundBorder(e, this, CornerRadius,
+                Color.FromArgb(200, 255, 255, 255), 2f); // 玻璃描边
         }
     }
 }

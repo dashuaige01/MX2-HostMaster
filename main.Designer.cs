@@ -60,7 +60,7 @@
             // 
             this.pnlDeviceControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlDeviceControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDeviceControl.BackColor = System.Drawing.Color.Transparent;
             this.pnlDeviceControl.Controls.Add(this.btnAddDevice);
             this.pnlDeviceControl.Controls.Add(this.nUDAddDevice);
             this.pnlDeviceControl.Controls.Add(this.btnStart);
@@ -84,10 +84,10 @@
             // 
             // btnAddDevice
             // 
-            this.btnAddDevice.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAddDevice.Location = new System.Drawing.Point(697, 38);
+            this.btnAddDevice.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnAddDevice.Location = new System.Drawing.Point(692, 38);
             this.btnAddDevice.Name = "btnAddDevice";
-            this.btnAddDevice.Size = new System.Drawing.Size(80, 23);
+            this.btnAddDevice.Size = new System.Drawing.Size(84, 23);
             this.btnAddDevice.TabIndex = 27;
             this.btnAddDevice.Text = "添加设备";
             this.btnAddDevice.UseVisualStyleBackColor = true;
@@ -95,7 +95,7 @@
             // 
             // nUDAddDevice
             // 
-            this.nUDAddDevice.Font = new System.Drawing.Font("宋体", 12F);
+            this.nUDAddDevice.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDAddDevice.Location = new System.Drawing.Point(583, 36);
             this.nUDAddDevice.Maximum = new decimal(new int[] {
             256,
@@ -113,48 +113,49 @@
             // 
             // btnStart
             // 
-            this.btnStart.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStart.BackColor = System.Drawing.Color.Transparent;
+            this.btnStart.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnStart.Location = new System.Drawing.Point(583, 7);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(80, 23);
             this.btnStart.TabIndex = 25;
             this.btnStart.Text = "连接";
-            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // lblStopBits
             // 
             this.lblStopBits.AutoSize = true;
-            this.lblStopBits.Font = new System.Drawing.Font("宋体", 12F);
-            this.lblStopBits.Location = new System.Drawing.Point(10, 41);
+            this.lblStopBits.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblStopBits.Location = new System.Drawing.Point(7, 41);
             this.lblStopBits.Name = "lblStopBits";
-            this.lblStopBits.Size = new System.Drawing.Size(63, 16);
+            this.lblStopBits.Size = new System.Drawing.Size(67, 16);
             this.lblStopBits.TabIndex = 18;
             this.lblStopBits.Text = "停止位:";
             // 
             // lblReadInterval
             // 
             this.lblReadInterval.AutoSize = true;
-            this.lblReadInterval.Font = new System.Drawing.Font("宋体", 12F);
-            this.lblReadInterval.Location = new System.Drawing.Point(367, 41);
+            this.lblReadInterval.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblReadInterval.Location = new System.Drawing.Point(364, 41);
             this.lblReadInterval.Name = "lblReadInterval";
-            this.lblReadInterval.Size = new System.Drawing.Size(79, 16);
+            this.lblReadInterval.Size = new System.Drawing.Size(84, 16);
             this.lblReadInterval.TabIndex = 20;
             this.lblReadInterval.Text = "读取时间:";
             // 
             // lblDataBits
             // 
             this.lblDataBits.AutoSize = true;
-            this.lblDataBits.Font = new System.Drawing.Font("宋体", 12F);
-            this.lblDataBits.Location = new System.Drawing.Point(375, 10);
+            this.lblDataBits.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblDataBits.Location = new System.Drawing.Point(373, 10);
             this.lblDataBits.Name = "lblDataBits";
-            this.lblDataBits.Size = new System.Drawing.Size(63, 16);
+            this.lblDataBits.Size = new System.Drawing.Size(67, 16);
             this.lblDataBits.TabIndex = 17;
             this.lblDataBits.Text = "数据位:";
             // 
             // nUDReadInterval
             // 
-            this.nUDReadInterval.Font = new System.Drawing.Font("宋体", 12F);
+            this.nUDReadInterval.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDReadInterval.Increment = new decimal(new int[] {
             100,
             0,
@@ -183,7 +184,7 @@
             // 
             // cmbBaudRate
             // 
-            this.cmbBaudRate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbBaudRate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbBaudRate.FormattingEnabled = true;
             this.cmbBaudRate.Items.AddRange(new object[] {
             "1200",
@@ -202,7 +203,7 @@
             // 
             // cmbParity
             // 
-            this.cmbParity.Font = new System.Drawing.Font("宋体", 12F);
+            this.cmbParity.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbParity.FormattingEnabled = true;
             this.cmbParity.Items.AddRange(new object[] {
             "无",
@@ -217,16 +218,16 @@
             // lblBaud
             // 
             this.lblBaud.AutoSize = true;
-            this.lblBaud.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblBaud.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblBaud.Location = new System.Drawing.Point(188, 10);
             this.lblBaud.Name = "lblBaud";
-            this.lblBaud.Size = new System.Drawing.Size(63, 16);
+            this.lblBaud.Size = new System.Drawing.Size(67, 16);
             this.lblBaud.TabIndex = 10;
             this.lblBaud.Text = "波特率:";
             // 
             // cmbStopBits
             // 
-            this.cmbStopBits.Font = new System.Drawing.Font("宋体", 12F);
+            this.cmbStopBits.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbStopBits.FormattingEnabled = true;
             this.cmbStopBits.Items.AddRange(new object[] {
             "1",
@@ -241,16 +242,16 @@
             // lblParity
             // 
             this.lblParity.AutoSize = true;
-            this.lblParity.Font = new System.Drawing.Font("宋体", 12F);
+            this.lblParity.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblParity.Location = new System.Drawing.Point(188, 41);
             this.lblParity.Name = "lblParity";
-            this.lblParity.Size = new System.Drawing.Size(63, 16);
+            this.lblParity.Size = new System.Drawing.Size(67, 16);
             this.lblParity.TabIndex = 19;
             this.lblParity.Text = "校验位:";
             // 
             // cmbSerialPort
             // 
-            this.cmbSerialPort.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbSerialPort.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbSerialPort.FormattingEnabled = true;
             this.cmbSerialPort.Location = new System.Drawing.Point(75, 6);
             this.cmbSerialPort.Name = "cmbSerialPort";
@@ -259,7 +260,7 @@
             // 
             // cmbDataBits
             // 
-            this.cmbDataBits.Font = new System.Drawing.Font("宋体", 12F);
+            this.cmbDataBits.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbDataBits.FormattingEnabled = true;
             this.cmbDataBits.Items.AddRange(new object[] {
             "5",
@@ -275,10 +276,10 @@
             // lblSerialPort
             // 
             this.lblSerialPort.AutoSize = true;
-            this.lblSerialPort.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblSerialPort.Location = new System.Drawing.Point(18, 10);
+            this.lblSerialPort.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSerialPort.Location = new System.Drawing.Point(15, 10);
             this.lblSerialPort.Name = "lblSerialPort";
-            this.lblSerialPort.Size = new System.Drawing.Size(47, 16);
+            this.lblSerialPort.Size = new System.Drawing.Size(50, 16);
             this.lblSerialPort.TabIndex = 4;
             this.lblSerialPort.Text = "串口:";
             // 
@@ -287,10 +288,9 @@
             this.flpDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flpDevice.AutoScroll = true;
-            this.flpDevice.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("flpDevice.BackgroundImage")));
+            this.flpDevice.BackColor = System.Drawing.Color.Transparent;
+            this.flpDevice.BackgroundImage = global::多设备管理系统.Properties.Resources.OIP_C;
             this.flpDevice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.flpDevice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpDevice.Location = new System.Drawing.Point(7, 84);
             this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
             this.flpDevice.Name = "flpDevice";
@@ -322,6 +322,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(809, 481);
             this.Controls.Add(this.flpDevice);
             this.Controls.Add(this.pnlDeviceControl);
