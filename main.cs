@@ -341,6 +341,7 @@ namespace 多设备管理系统
                 if (buff[0] != ScanIndex || crc[0] != buff[buff.Length - 2] || crc[1] != buff[buff.Length - 1]) // 没发现新设备的正常情况
                     continue;
                 AddDevicePanel(ScanIndex); // 增加新的子设备窗口
+                await Task.Delay(50); // 非阻塞等待，替代 Thread.Sleep
             }
         }
     }

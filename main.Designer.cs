@@ -288,6 +288,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flpDevice.AutoScroll = true;
+            this.flpDevice.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("flpDevice.BackgroundImage")));
+            this.flpDevice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.flpDevice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpDevice.Location = new System.Drawing.Point(7, 84);
             this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
