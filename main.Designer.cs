@@ -79,13 +79,13 @@
             this.pnlDeviceControl.Location = new System.Drawing.Point(7, 7);
             this.pnlDeviceControl.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDeviceControl.Name = "pnlDeviceControl";
-            this.pnlDeviceControl.Size = new System.Drawing.Size(810, 70);
+            this.pnlDeviceControl.Size = new System.Drawing.Size(795, 70);
             this.pnlDeviceControl.TabIndex = 1;
             // 
             // btnAddDevice
             // 
             this.btnAddDevice.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAddDevice.Location = new System.Drawing.Point(712, 38);
+            this.btnAddDevice.Location = new System.Drawing.Point(697, 38);
             this.btnAddDevice.Name = "btnAddDevice";
             this.btnAddDevice.Size = new System.Drawing.Size(80, 23);
             this.btnAddDevice.TabIndex = 27;
@@ -96,7 +96,7 @@
             // nUDAddDevice
             // 
             this.nUDAddDevice.Font = new System.Drawing.Font("宋体", 12F);
-            this.nUDAddDevice.Location = new System.Drawing.Point(598, 36);
+            this.nUDAddDevice.Location = new System.Drawing.Point(583, 36);
             this.nUDAddDevice.Maximum = new decimal(new int[] {
             256,
             0,
@@ -114,7 +114,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnStart.Location = new System.Drawing.Point(598, 7);
+            this.btnStart.Location = new System.Drawing.Point(583, 7);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(80, 23);
             this.btnStart.TabIndex = 25;
@@ -292,7 +292,7 @@
             this.flpDevice.Location = new System.Drawing.Point(7, 84);
             this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
             this.flpDevice.Name = "flpDevice";
-            this.flpDevice.Size = new System.Drawing.Size(810, 390);
+            this.flpDevice.Size = new System.Drawing.Size(795, 390);
             this.flpDevice.TabIndex = 2;
             // 
             // timSerialPort
@@ -320,7 +320,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 481);
+            this.ClientSize = new System.Drawing.Size(809, 481);
             this.Controls.Add(this.flpDevice);
             this.Controls.Add(this.pnlDeviceControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

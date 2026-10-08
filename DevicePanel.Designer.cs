@@ -33,13 +33,11 @@
             this.btnValueDown = new System.Windows.Forms.Button();
             this.nUDPresLimit = new System.Windows.Forms.NumericUpDown();
             this.lbPresLimit = new System.Windows.Forms.Label();
-            this.nUDBaudRate = new System.Windows.Forms.NumericUpDown();
             this.nUDAddress = new System.Windows.Forms.NumericUpDown();
             this.nUDHumiHigh = new System.Windows.Forms.NumericUpDown();
             this.nUDTempLimit = new System.Windows.Forms.NumericUpDown();
             this.btnConfigPara = new System.Windows.Forms.Button();
             this.btnTimeCheck = new System.Windows.Forms.Button();
-            this.lbBaudRate = new System.Windows.Forms.Label();
             this.lbAddress = new System.Windows.Forms.Label();
             this.lbHumiLow = new System.Windows.Forms.Label();
             this.lbHumiHigh = new System.Windows.Forms.Label();
@@ -60,7 +58,6 @@
             this.lbHeaterl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiLow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPresLimit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDBaudRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiHigh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTempLimit)).BeginInit();
@@ -93,7 +90,7 @@
             // btnValueDown
             // 
             this.btnValueDown.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnValueDown.Location = new System.Drawing.Point(89, 256);
+            this.btnValueDown.Location = new System.Drawing.Point(180, 256);
             this.btnValueDown.Name = "btnValueDown";
             this.btnValueDown.Size = new System.Drawing.Size(80, 23);
             this.btnValueDown.TabIndex = 64;
@@ -109,7 +106,7 @@
             0,
             0,
             0});
-            this.nUDPresLimit.Location = new System.Drawing.Point(282, 220);
+            this.nUDPresLimit.Location = new System.Drawing.Point(282, 187);
             this.nUDPresLimit.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -128,29 +125,11 @@
             // 
             this.lbPresLimit.AutoSize = true;
             this.lbPresLimit.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbPresLimit.Location = new System.Drawing.Point(209, 225);
+            this.lbPresLimit.Location = new System.Drawing.Point(209, 192);
             this.lbPresLimit.Name = "lbPresLimit";
             this.lbPresLimit.Size = new System.Drawing.Size(71, 16);
             this.lbPresLimit.TabIndex = 62;
             this.lbPresLimit.Text = "压力阈值";
-            // 
-            // nUDBaudRate
-            // 
-            this.nUDBaudRate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.nUDBaudRate.Location = new System.Drawing.Point(282, 187);
-            this.nUDBaudRate.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nUDBaudRate.Name = "nUDBaudRate";
-            this.nUDBaudRate.Size = new System.Drawing.Size(75, 26);
-            this.nUDBaudRate.TabIndex = 61;
-            this.nUDBaudRate.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
             // 
             // nUDAddress
             // 
@@ -199,7 +178,7 @@
             // btnConfigPara
             // 
             this.btnConfigPara.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConfigPara.Location = new System.Drawing.Point(269, 256);
+            this.btnConfigPara.Location = new System.Drawing.Point(270, 256);
             this.btnConfigPara.Name = "btnConfigPara";
             this.btnConfigPara.Size = new System.Drawing.Size(87, 23);
             this.btnConfigPara.TabIndex = 57;
@@ -209,24 +188,15 @@
             // 
             // btnTimeCheck
             // 
+            this.btnTimeCheck.BackColor = System.Drawing.Color.Red;
             this.btnTimeCheck.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnTimeCheck.Location = new System.Drawing.Point(179, 256);
+            this.btnTimeCheck.Location = new System.Drawing.Point(90, 256);
             this.btnTimeCheck.Name = "btnTimeCheck";
             this.btnTimeCheck.Size = new System.Drawing.Size(80, 23);
             this.btnTimeCheck.TabIndex = 56;
-            this.btnTimeCheck.Text = "对时";
-            this.btnTimeCheck.UseVisualStyleBackColor = true;
-            this.btnTimeCheck.Click += new System.EventHandler(this.btnTimeCheck_Click);
-            // 
-            // lbBaudRate
-            // 
-            this.lbBaudRate.AutoSize = true;
-            this.lbBaudRate.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbBaudRate.Location = new System.Drawing.Point(217, 192);
-            this.lbBaudRate.Name = "lbBaudRate";
-            this.lbBaudRate.Size = new System.Drawing.Size(55, 16);
-            this.lbBaudRate.TabIndex = 55;
-            this.lbBaudRate.Text = "波特率";
+            this.btnTimeCheck.Text = "删除";
+            this.btnTimeCheck.UseVisualStyleBackColor = false;
+            this.btnTimeCheck.Click += new System.EventHandler(this.btnDeviceDelete_Click);
             // 
             // lbAddress
             // 
@@ -297,7 +267,7 @@
             this.lbHumiValue.Name = "lbHumiValue";
             this.lbHumiValue.Size = new System.Drawing.Size(120, 29);
             this.lbHumiValue.TabIndex = 44;
-            this.lbHumiValue.Text = "-- %";
+            this.lbHumiValue.Text = "40%";
             this.lbHumiValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbHumidity
@@ -329,7 +299,7 @@
             this.lbTempeValue.Name = "lbTempeValue";
             this.lbTempeValue.Size = new System.Drawing.Size(120, 29);
             this.lbTempeValue.TabIndex = 42;
-            this.lbTempeValue.Text = "-- ℃";
+            this.lbTempeValue.Text = "30℃";
             this.lbTempeValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbFanStatus
@@ -425,13 +395,11 @@
             this.Controls.Add(this.btnValueDown);
             this.Controls.Add(this.nUDPresLimit);
             this.Controls.Add(this.lbPresLimit);
-            this.Controls.Add(this.nUDBaudRate);
             this.Controls.Add(this.nUDAddress);
             this.Controls.Add(this.nUDHumiHigh);
             this.Controls.Add(this.nUDTempLimit);
             this.Controls.Add(this.btnConfigPara);
             this.Controls.Add(this.btnTimeCheck);
-            this.Controls.Add(this.lbBaudRate);
             this.Controls.Add(this.lbAddress);
             this.Controls.Add(this.lbHumiLow);
             this.Controls.Add(this.lbHumiHigh);
@@ -454,7 +422,6 @@
             this.Size = new System.Drawing.Size(384, 289);
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiLow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPresLimit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDBaudRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiHigh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTempLimit)).EndInit();
@@ -470,13 +437,11 @@
         private System.Windows.Forms.Button btnValueDown;
         private System.Windows.Forms.NumericUpDown nUDPresLimit;
         private System.Windows.Forms.Label lbPresLimit;
-        private System.Windows.Forms.NumericUpDown nUDBaudRate;
         private System.Windows.Forms.NumericUpDown nUDAddress;
         private System.Windows.Forms.NumericUpDown nUDHumiHigh;
         private System.Windows.Forms.NumericUpDown nUDTempLimit;
         private System.Windows.Forms.Button btnConfigPara;
         private System.Windows.Forms.Button btnTimeCheck;
-        private System.Windows.Forms.Label lbBaudRate;
         private System.Windows.Forms.Label lbAddress;
         private System.Windows.Forms.Label lbHumiLow;
         private System.Windows.Forms.Label lbHumiHigh;
