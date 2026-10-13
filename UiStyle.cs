@@ -36,7 +36,7 @@ namespace 多设备管理系统
         public static void PaintGlassHighlight(PaintEventArgs e, Control ctrl, int radius)
         { // 顶部高光（模拟磨砂）
             var g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias; // 添加抗锯齿效果
 
             using (var path = CreateRoundRect(ctrl.ClientRectangle, radius))
             {
@@ -50,7 +50,7 @@ namespace 多设备管理系统
         public static void DrawRoundBorder(PaintEventArgs e, Control ctrl,
                                            int radius, Color color, float width = 1f)
         { // 3. 画圆角描边（在 Paint 事件里调用）
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias; // 添加抗锯齿效果
             using (var path = CreateRoundRect(ctrl.ClientRectangle, radius))
             using (var pen = new Pen(color, width))
                 e.Graphics.DrawPath(pen, path);
@@ -61,19 +61,20 @@ namespace 多设备管理系统
         { // 4. 一键圆角：裁剪 + 描边 + 自动跟随尺寸变化
           // BorderStyle 是具体控件才有的属性，基类 Control 没有，需要先判断类型
             if (ctrl is Panel panel)
-                panel.BorderStyle = BorderStyle.None;
+                panel.BorderStyle = BorderStyle.None; // 去掉边框
             else if (ctrl is UserControl uc)
-                uc.BorderStyle = BorderStyle.None;
+                uc.BorderStyle = BorderStyle.None; // 去掉边框
+
+            ApplyRoundRegion(ctrl, radius); // 立刻裁剪出圆角
 
             ctrl.SizeChanged // 控件尺寸改变事件
                 += // 事件订阅操作符,事件发生时,执行后面的逻辑
                 (s, ev) => // Lambda 表达式
                 {
                     ApplyRoundRegion(ctrl, radius); // 圆角裁剪
-                    ctrl.Invalidate();   // ← 新增：强制全量重绘，清掉旧边框残影
+                    ctrl.Invalidate(); // 强制全量重绘，清掉旧边框残影
                 };
                 
-            
             ctrl.Paint // 窗口内容或大小改变的事件
                 += // 事件订阅操作符,事件发生时,执行后面的逻辑
                 (s, ev) => // Lambda 表达式

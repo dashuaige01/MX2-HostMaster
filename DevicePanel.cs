@@ -25,12 +25,12 @@ namespace 多设备管理系统
 
         public DevicePanel(int address, Func<byte[], byte[]> sendFunc, Action<int> removeFunc)
         {
-            SetStyle(ControlStyles.UserPaint // 空间界面内容由设计者独立绘制
-                    | ControlStyles.AllPaintingInWmPaint // 背景画面不擦除
-                    | ControlStyles.OptimizedDoubleBuffer // 双重冲区画面s
-                    | ControlStyles.ResizeRedraw // 拉伸画面重新绘制
-                    | ControlStyles.SupportsTransparentBackColor, true); // 
-            this.BackColor = Color.Transparent;
+            SetStyle(ControlStyles.UserPaint // 自己画
+                    | ControlStyles.AllPaintingInWmPaint // 不擦背景
+                    | ControlStyles.OptimizedDoubleBuffer // 双缓冲防闪烁
+                    | ControlStyles.ResizeRedraw // 改变大小重绘
+                    | ControlStyles.SupportsTransparentBackColor, true); // 允许透明
+            this.BackColor = Color.Transparent; // 背景颜色改成随父控件
 
             _sendFunc = sendFunc; // 发送函数
             DeviceAddress = address; // 从机设备地址
@@ -155,29 +155,12 @@ namespace 多设备管理系统
             }
         }
 
-        protected override void OnSizeChanged(EventArgs e) // 调整控件显示
-         //  重写父类       窗口大小改变时自动调用
-        {
-            System.Diagnostics.Debug.WriteLine("触发尺寸改变回调！"); // 加这句
-            base.OnSizeChanged(e); // 调用父类的默认逻辑
-            UiStyle.ApplyRoundRegion(this, CornerRadius); // 圆角裁剪
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        //  重写父类              重写背景绘制
-        {
-            base.OnPaintBackground(e); // 只需这一句，系统会自动帮你对齐、缩放并画出正确的父控件背景
-
-            var g = e.Graphics; // 拿到画布
-            g.SmoothingMode = SmoothingMode.AntiAlias; // 开启抗锯齿，让圆角和斜线平滑无锯齿
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e); // 调用父类逻辑，通常用来绘制里面的子控件（比如文本框、按钮）
             UiStyle.PaintGlassHighlight(e, this, CornerRadius); // 顶部高光
             UiStyle.DrawRoundBorder(e, this, CornerRadius,
-                Color.FromArgb(200, 255, 255, 255), 2f); // 玻璃描边
+                Color.FromArgb(200, 155, 155, 155), 2f); // 玻璃描边
         }
     }
 }

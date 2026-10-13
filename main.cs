@@ -22,9 +22,27 @@ namespace 多设备管理系统
         private int _lastScanIndex = 1; // 最后一个子设备地址索引
         private int ScanIndex = 1; // 最后一个子设备地址索引
         private readonly object _serialLock = new object(); // 防止获取设备数据和找设备的定时器冲突的锁
+        private Image _frameBg; // 暂存照片操作对象
         public main()
         {
+            this.DoubleBuffered = true; // 窗体双缓冲，减闪烁
             InitializeComponent(); // 初始化组件窗口
+            ResizeBegin += main_ResizeBegin; // 窗口调整大小的事件开始添加回调函数
+            ResizeEnd += main_ResizeEnd; // 窗口调整大小的事件结束添加回调函数
+        }
+
+        private void main_ResizeBegin(object sender, EventArgs e)
+        { // 鼠标开始拖动窗口边缘瞬间
+            this.SuspendLayout(); // 暂停布局逻辑，极大减少重绘计算
+            _frameBg = pnlDeviceFrame.BackgroundImage; // 把照片存起来
+            pnlDeviceFrame.BackgroundImage = null; // 移除照片
+        }
+
+        private void main_ResizeEnd(object sender, EventArgs e)
+        { // 鼠标结束拖动窗口边缘瞬间
+            pnlDeviceFrame.BackgroundImage = _frameBg; // 把照片放回去
+            _frameBg = null; // 移除背景图片操作对象
+            this.ResumeLayout(true); // 恢复布局
         }
 
         private void main_Load(object sender, EventArgs e)
@@ -36,7 +54,7 @@ namespace 多设备管理系统
                 cmbSerialPort.Text = cmbSerialPort.Items[0].ToString(); // 显示第1个串口信息
 
             flpDevice.Controls.Clear(); // 清除设计器里残留的旧面板
-            UiStyle.EnableRoundCorners(pnlDeviceFrame, 10, Color.Black);
+            UiStyle.EnableRoundCorners(pnlDeviceFrame, 10, Color.FromArgb(80, 80, 80));
             UiStyle.EnableRoundCorners(pnlDeviceControl, 10, Color.FromArgb(80, 80, 80)); // 圆角描边
         }
 
