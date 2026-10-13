@@ -36,7 +36,7 @@ namespace 多设备管理系统
                 cmbSerialPort.Text = cmbSerialPort.Items[0].ToString(); // 显示第1个串口信息
 
             flpDevice.Controls.Clear(); // 清除设计器里残留的旧面板
-            UiStyle.EnableRoundCorners(flpDevice, 10, Color.FromArgb(80, 80, 80)); // 圆角描边
+            UiStyle.EnableRoundCorners(pnlDeviceFrame, 10, Color.Black);
             UiStyle.EnableRoundCorners(pnlDeviceControl, 10, Color.FromArgb(80, 80, 80)); // 圆角描边
         }
 

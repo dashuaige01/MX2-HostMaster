@@ -46,14 +46,16 @@
             this.cmbSerialPort = new System.Windows.Forms.ComboBox();
             this.cmbDataBits = new System.Windows.Forms.ComboBox();
             this.lblSerialPort = new System.Windows.Forms.Label();
-            this.flpDevice = new System.Windows.Forms.FlowLayoutPanel();
             this.timSerialPort = new System.Windows.Forms.Timer(this.components);
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.timAutoSend = new System.Windows.Forms.Timer(this.components);
             this.timScan = new System.Windows.Forms.Timer(this.components);
+            this.pnlDeviceFrame = new System.Windows.Forms.Panel();
+            this.flpDevice = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlDeviceControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddDevice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDReadInterval)).BeginInit();
+            this.pnlDeviceFrame.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlDeviceControl
@@ -283,20 +285,6 @@
             this.lblSerialPort.TabIndex = 4;
             this.lblSerialPort.Text = "串口:";
             // 
-            // flpDevice
-            // 
-            this.flpDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flpDevice.BackColor = System.Drawing.Color.Transparent;
-            this.flpDevice.BackgroundImage = global::多设备管理系统.Properties.Resources.OIP_C;
-            this.flpDevice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.flpDevice.Location = new System.Drawing.Point(7, 84);
-            this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
-            this.flpDevice.Name = "flpDevice";
-            this.flpDevice.Size = new System.Drawing.Size(795, 390);
-            this.flpDevice.TabIndex = 2;
-            // 
             // timSerialPort
             // 
             this.timSerialPort.Enabled = true;
@@ -318,13 +306,39 @@
             this.timScan.Interval = 2000;
             this.timScan.Tick += new System.EventHandler(this.timScan_Tick);
             // 
+            // pnlDeviceFrame
+            // 
+            this.pnlDeviceFrame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlDeviceFrame.BackgroundImage = global::多设备管理系统.Properties.Resources.OIP_C;
+            this.pnlDeviceFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlDeviceFrame.Controls.Add(this.flpDevice);
+            this.pnlDeviceFrame.Location = new System.Drawing.Point(7, 82);
+            this.pnlDeviceFrame.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlDeviceFrame.Name = "pnlDeviceFrame";
+            this.pnlDeviceFrame.Size = new System.Drawing.Size(795, 390);
+            this.pnlDeviceFrame.TabIndex = 0;
+            // 
+            // flpDevice
+            // 
+            this.flpDevice.AutoScroll = true;
+            this.flpDevice.BackColor = System.Drawing.Color.Transparent;
+            this.flpDevice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.flpDevice.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpDevice.Location = new System.Drawing.Point(0, 0);
+            this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
+            this.flpDevice.Name = "flpDevice";
+            this.flpDevice.Size = new System.Drawing.Size(795, 390);
+            this.flpDevice.TabIndex = 5;
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(809, 481);
-            this.Controls.Add(this.flpDevice);
+            this.Controls.Add(this.pnlDeviceFrame);
             this.Controls.Add(this.pnlDeviceControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "main";
@@ -335,6 +349,7 @@
             this.pnlDeviceControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddDevice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDReadInterval)).EndInit();
+            this.pnlDeviceFrame.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -354,7 +369,6 @@
         private System.Windows.Forms.Label lblDataBits;
         private System.Windows.Forms.NumericUpDown nUDReadInterval;
         private System.Windows.Forms.Label lblReadInterval;
-        private System.Windows.Forms.FlowLayoutPanel flpDevice;
         private System.Windows.Forms.Timer timSerialPort;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Button btnStart;
@@ -362,6 +376,8 @@
         private System.Windows.Forms.Timer timScan;
         private System.Windows.Forms.Button btnAddDevice;
         private System.Windows.Forms.NumericUpDown nUDAddDevice;
+        private System.Windows.Forms.Panel pnlDeviceFrame;
+        private System.Windows.Forms.FlowLayoutPanel flpDevice;
     }
 }
 

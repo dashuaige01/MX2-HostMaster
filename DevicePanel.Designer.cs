@@ -76,7 +76,7 @@
             // 
             // nUDHumiLow
             // 
-            this.nUDHumiLow.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nUDHumiLow.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDHumiLow.Location = new System.Drawing.Point(102, 220);
             this.nUDHumiLow.Name = "nUDHumiLow";
             this.nUDHumiLow.Size = new System.Drawing.Size(75, 26);
@@ -100,7 +100,7 @@
             // 
             // nUDPresLimit
             // 
-            this.nUDPresLimit.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nUDPresLimit.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDPresLimit.Increment = new decimal(new int[] {
             100,
             0,
@@ -133,7 +133,7 @@
             // 
             // nUDAddress
             // 
-            this.nUDAddress.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nUDAddress.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDAddress.Location = new System.Drawing.Point(282, 154);
             this.nUDAddress.Maximum = new decimal(new int[] {
             255,
@@ -151,7 +151,7 @@
             // 
             // nUDHumiHigh
             // 
-            this.nUDHumiHigh.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nUDHumiHigh.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDHumiHigh.Location = new System.Drawing.Point(102, 187);
             this.nUDHumiHigh.Name = "nUDHumiHigh";
             this.nUDHumiHigh.Size = new System.Drawing.Size(75, 26);
@@ -164,7 +164,7 @@
             // 
             // nUDTempLimit
             // 
-            this.nUDTempLimit.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nUDTempLimit.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.nUDTempLimit.Location = new System.Drawing.Point(102, 154);
             this.nUDTempLimit.Name = "nUDTempLimit";
             this.nUDTempLimit.Size = new System.Drawing.Size(75, 26);
@@ -285,7 +285,7 @@
             this.lbHeaterhStatus.AutoSize = true;
             this.lbHeaterhStatus.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbHeaterhStatus.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lbHeaterhStatus.Location = new System.Drawing.Point(180, 111);
+            this.lbHeaterhStatus.Location = new System.Drawing.Point(181, 111);
             this.lbHeaterhStatus.Name = "lbHeaterhStatus";
             this.lbHeaterhStatus.Size = new System.Drawing.Size(51, 20);
             this.lbHeaterhStatus.TabIndex = 48;
