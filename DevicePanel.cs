@@ -160,7 +160,7 @@ namespace 多设备管理系统
             base.OnPaint(e); // 调用父类逻辑，通常用来绘制里面的子控件（比如文本框、按钮）
             UiStyle.PaintGlassHighlight(e, this, CornerRadius); // 顶部高光
             UiStyle.DrawRoundBorder(e, this, CornerRadius,
-                Color.FromArgb(200, 155, 155, 155), 2f); // 玻璃描边
+                Color.FromArgb(200, 80, 80, 80), 2f); // 玻璃描边
         }
     }
 }

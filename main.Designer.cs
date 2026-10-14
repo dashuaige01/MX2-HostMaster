@@ -51,7 +51,7 @@
             this.timAutoSend = new System.Windows.Forms.Timer(this.components);
             this.timScan = new System.Windows.Forms.Timer(this.components);
             this.pnlDeviceFrame = new System.Windows.Forms.Panel();
-            this.flpDevice = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpDevice = new 多设备管理系统.PhotoFlowPanel();
             this.pnlDeviceControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddDevice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDReadInterval)).BeginInit();
@@ -311,7 +311,7 @@
             this.pnlDeviceFrame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlDeviceFrame.BackgroundImage = global::多设备管理系统.Properties.Resources.OIP_C;
+            this.pnlDeviceFrame.BackColor = System.Drawing.Color.Transparent;
             this.pnlDeviceFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlDeviceFrame.Controls.Add(this.flpDevice);
             this.pnlDeviceFrame.Location = new System.Drawing.Point(7, 82);
@@ -330,7 +330,7 @@
             this.flpDevice.Margin = new System.Windows.Forms.Padding(0);
             this.flpDevice.Name = "flpDevice";
             this.flpDevice.Size = new System.Drawing.Size(795, 390);
-            this.flpDevice.TabIndex = 5;
+            this.flpDevice.TabIndex = 9;
             // 
             // main
             // 
@@ -377,7 +377,7 @@
         private System.Windows.Forms.Button btnAddDevice;
         private System.Windows.Forms.NumericUpDown nUDAddDevice;
         private System.Windows.Forms.Panel pnlDeviceFrame;
-        private System.Windows.Forms.FlowLayoutPanel flpDevice;
+        private PhotoFlowPanel flpDevice;
     }
 }
 
