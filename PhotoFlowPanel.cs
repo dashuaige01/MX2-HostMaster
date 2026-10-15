@@ -13,20 +13,20 @@ namespace 多设备管理系统
     // 画的内容与窗体那张图1:1对位（无缝衔接）
     internal class PhotoFlowPanel : FlowLayoutPanel
     {
-        protected override void OnScroll(ScrollEventArgs se) // 滑块滑动触发的事件
-        {
+        protected override void OnScroll(ScrollEventArgs se)
+        { // 滑块滑动触发的事件
             base.OnScroll(se); // 执行默认的滑块滑动逻辑
             Invalidate(); // 每次滚动整板重绘，双保险
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e) // 鼠标滚轮滚动触发的事件
-        {
+        protected override void OnMouseWheel(MouseEventArgs e)
+        { // 鼠标滚轮滚动触发的事件
             base.OnMouseWheel(e); // 执行默认的滚轮滚动逻辑
             Invalidate(); // 补重绘（滚轮不会触发 Scroll 事件，必须自己补这一刀）
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e) // 控件背景需要重新绘制时发生
-        {
+        protected override void OnPaintBackground(PaintEventArgs e)
+        { // 控件背景需要重新绘制时发生
             Form f = FindForm(); // 控件所在窗体对象
             Image img = f?.BackgroundImage; // 控件所在窗体对象背景图片
             if (img == null) // 控件所在窗体对象背景图片不存在
@@ -51,8 +51,8 @@ namespace 多设备管理系统
                     f.ClientSize.Width, f.ClientSize.Height)); // 把背景图片放到当前控件显示，按控件在窗体的位置来显示上
         }
 
-        protected override void OnPaint(PaintEventArgs e) // 控件需要重新绘制时发生
-        {
+        protected override void OnPaint(PaintEventArgs e)
+        { // 控件需要重新绘制时发生
             base.OnPaint(e);
 
             // 圆角描边：画在自己的背景图之上；

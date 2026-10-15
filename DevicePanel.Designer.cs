@@ -269,6 +269,7 @@
             this.lbHumiValue.TabIndex = 44;
             this.lbHumiValue.Text = "40%";
             this.lbHumiValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbHumiValue.Click += new System.EventHandler(this.lbHumiValue_Click);
             // 
             // lbHumidity
             // 
@@ -301,6 +302,7 @@
             this.lbTempeValue.TabIndex = 42;
             this.lbTempeValue.Text = "30℃";
             this.lbTempeValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbTempeValue.Click += new System.EventHandler(this.lbTempeValue_Click);
             // 
             // lbFanStatus
             // 

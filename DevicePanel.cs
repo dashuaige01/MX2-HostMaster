@@ -73,6 +73,18 @@ namespace 多设备管理系统
                             lbSensorStatus_T.Text, lbHeaterlStatus.Text, lbHeaterhStatus.Text); // 顺便存到自己的数据库
         }
 
+        public void UpSencelData(byte[] buff) // 更新数据窗口显示
+        {
+            if (buff == null || buff.Length < 7) // 7位参数数据
+                return;
+
+            nUDTempLimit.Value = buff[5];
+            nUDHumiHigh.Value = buff[3];
+            nUDHumiLow.Value = buff[4];
+            nUDAddress.Value = buff[6];
+            nUDPresLimit.Value = (UInt16)(buff[15] | (buff[16]<<8));
+        }
+
         public void DeviceOnline(bool statue)
         {
             if (statue)
@@ -87,7 +99,7 @@ namespace 多设备管理系统
             {
                 dlg.Title = "选择保存位置";
                 dlg.Filter = "Excel文件|*.xlsx";
-                dlg.FileName = $"SensorData_{DeviceAddress}.xlsx";  // 默认文件名带设备号
+                dlg.FileName = $"SensorData_{DeviceAddress}.xlsx"; // 默认文件名带设备号
 
                 if (dlg.ShowDialog() == DialogResult.OK) { // 用户点了"保存"
                     _db.ReadSQLData(dlg.FileName); // 用选中的路径导出
@@ -110,7 +122,7 @@ namespace 多设备管理系统
                     dataSend[7] = (byte)nUDHumiHigh.Value; // 湿度上限值
                     dataSend[8] = (byte)nUDHumiLow.Value; // 湿度下限值
                     dataSend[10] = (byte)nUDAddress.Value; // 地址值
-                    //dataSend[11] = (byte)nUDBaudRate.Value; // 波特率
+                    //dataSend[11] = (byte)nUDBaudRate.Value; // 波特率 不建议更改
                     dataSend[12] = (byte)(now.Year & 0xFF); // 年低位
                     dataSend[13] = (byte)((now.Year >> 8) & 0xFF); // 年高位
                     dataSend[14] = (byte)now.Month; // 月
@@ -126,10 +138,13 @@ namespace 多设备管理系统
                     dataSend[dataSend.Length - 1] = crc[1];
 
                     byte[] buff = _sendFunc(dataSend); // 发送数据
-                    if (buff == null || buff.Length < 4) {
+                    if (buff == null || buff.Length < 4) 
+                    {
                         MessageBox.Show("参数修改失败：设备无响应");
                         return;
-                    } else if ((buff.Length > 0) && ((buff[1] & 0x80) != 0x80)) {
+                    } 
+                    else if ((buff.Length > 0) && ((buff[1] & 0x80) != 0x80)) 
+                    {
                         this.Invoke(new Action(() => { // UI 线程更新界面
                             crc = main.CRC16_MODBUS(buff, buff.Length - 2);
                             if (crc[0] == buff[buff.Length - 2] && crc[1] == buff[buff.Length - 1]) {
@@ -139,7 +154,7 @@ namespace 多设备管理系统
                             }
                         }));
                     }
-                }); // 传入 token
+                });
             } catch (Exception ex) {
                 MessageBox.Show("参数配置错误：" + ex);
             }
@@ -161,6 +176,16 @@ namespace 多设备管理系统
             UiStyle.PaintGlassHighlight(e, this, CornerRadius); // 顶部高光
             UiStyle.DrawRoundBorder(e, this, CornerRadius,
                 Color.FromArgb(200, 80, 80, 80), 2f); // 玻璃描边
+        }
+
+        private void lbTempeValue_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("点击温度数据窗口");
+        }
+
+        private void lbHumiValue_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("点击湿度数据窗口");
         }
     }
 }

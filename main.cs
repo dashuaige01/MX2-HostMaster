@@ -211,7 +211,7 @@ namespace 多设备管理系统
 
             try 
             {
-                byte[] dataSend = { 0x01, 0x03, 0x00, 0x01, 0x00, 0x01, 0x04, 0x08 }; // 数据帧
+                byte[] dataSend = { 0x01, 0x03, 0x00, 0x05, 0x00, 0x07, 0x04, 0x08 }; // 数据帧
                 byte[] crc = CRC16_MODBUS(dataSend, dataSend.Length - 2); // CRC校验计算
                 dataSend[dataSend.Length - 2] = crc[0]; // 改数据帧校验位
                 dataSend[dataSend.Length - 1] = crc[1];
@@ -240,6 +240,7 @@ namespace 多设备管理系统
                 if (buff[0] != 0x01 || crc[0] != buffChange[buffChange.Length - 2] || crc[1] != buffChange[buffChange.Length - 1]) // 没发现新设备的正常情况
                     return;
                 AddDevicePanel(_lastScanIndex); // 增加新的子设备窗口
+                devices[_lastScanIndex].UpSencelData(buff);
             } 
             finally 
             {
@@ -247,7 +248,7 @@ namespace 多设备管理系统
             }
         }
 
-        private void btnAddDevice_Click(object sender, EventArgs e)
+        private async void btnAddDevice_Click(object sender, EventArgs e)
         {
             if (!serialPort1.IsOpen) 
             { // 1. 检查串口是否打开
@@ -258,22 +259,18 @@ namespace 多设备管理系统
             byte Index = (byte)nUDAddDevice.Value; // 转换数据
             if (!devices.ContainsKey(Index)) 
             { // 没有这个字典键值
-                bool received = false;
-                lock (_serialLock) 
-                { // 串口锁，防止多任务访问同一串口发生冲突
-                    byte[] dataSend = { Index, 0x03, 0x00, 0x01, 0x00, 0x01, 0x84, 0x0A }; // 修改串口地址数据帧
-                    byte[] crc = CRC16_MODBUS(dataSend, dataSend.Length - 2); // CRC校验计算
-                    dataSend[dataSend.Length - 2] = crc[0]; // 改数据帧校验位
-                    dataSend[dataSend.Length - 1] = crc[1];
-                    _dataReceivedEvent.Reset(); // 发送前重置信号
-                    serialPort1.DiscardInBuffer(); // 清除串口缓冲区数据
-                    serialPort1.Write(dataSend, 0, dataSend.Length); // 发送数据
-                    received = _dataReceivedEvent.WaitOne(200);
-                }
-                if (received) 
-                { // 子设备存在且更改成功
-                    AddDevicePanel(Index); // 按序增加子设备窗口
-                }
+                byte[] dataSend = { Index, 0x03, 0x00, 0x05, 0x00, 0x07, 0x84, 0x0A }; // 修改串口地址数据帧
+                byte[] crc = CRC16_MODBUS(dataSend, dataSend.Length - 2); // CRC校验计算
+                dataSend[dataSend.Length - 2] = crc[0]; // 改数据帧校验位
+                dataSend[dataSend.Length - 1] = crc[1];
+                byte[] buff = await Task.Run(() => SendAndReceive(dataSend)); // 后台收发
+                if (buff == null || buff.Length < 4)
+                    return;
+                crc = CRC16_MODBUS(buff, buff.Length - 2);
+                if (buff[0] != Index || crc[0] != buff[buff.Length - 2] || crc[1] != buff[buff.Length - 1]) // 没发现新设备的正常情况
+                    return;
+                AddDevicePanel(Index); // 增加新的子设备窗口
+                devices[Index].UpSencelData(buff);
             }
         }
 
@@ -284,7 +281,8 @@ namespace 多设备管理系统
                 return null;
             }
 
-            lock (_serialLock) { // 锁只在 main.cs 内部，外部碰不到 
+            lock (_serialLock) 
+            { // 锁只在 main.cs 内部，外部碰不到 
                 _dataReceivedEvent.Reset(); // 复位串口信号量 
                 serialPort1.DiscardInBuffer(); // 清空串口数据缓存 
                 serialPort1.Write(data, 0, data.Length); // 发送串口数据帧 
@@ -335,7 +333,7 @@ namespace 多设备管理系统
 
         private async void Device_Scan()
         {
-            byte[] dataSend = { 0x01, 0x03, 0x00, 0x01, 0x00, 0x01, 0x04, 0x08 }; // 数据帧
+            byte[] dataSend = { 0x01, 0x03, 0x00, 0x05, 0x00, 0x07, 0x04, 0x08 }; // 数据帧
             for (ScanIndex = 2; ScanIndex < 255; ScanIndex++)
             {
                 if (devices.ContainsKey(ScanIndex))
@@ -358,6 +356,7 @@ namespace 多设备管理系统
                 if (buff[0] != ScanIndex || crc[0] != buff[buff.Length - 2] || crc[1] != buff[buff.Length - 1]) // 没发现新设备的正常情况
                     continue;
                 AddDevicePanel(ScanIndex); // 增加新的子设备窗口
+                devices[ScanIndex].UpSencelData(buff);
                 await Task.Delay(50); // 非阻塞等待，替代 Thread.Sleep
             }
         }
