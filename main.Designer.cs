@@ -340,6 +340,7 @@
             this.ClientSize = new System.Drawing.Size(809, 481);
             this.Controls.Add(this.pnlDeviceFrame);
             this.Controls.Add(this.pnlDeviceControl);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

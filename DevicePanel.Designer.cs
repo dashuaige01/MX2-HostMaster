@@ -56,11 +56,17 @@
             this.lbFan = new System.Windows.Forms.Label();
             this.lbSensor_T = new System.Windows.Forms.Label();
             this.lbHeaterl = new System.Windows.Forms.Label();
+            this.pnlChart = new System.Windows.Forms.Panel();
+            this.picChart = new System.Windows.Forms.PictureBox();
+            this.lbChartTitle = new System.Windows.Forms.Label();
+            this.btnBack = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiLow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPresLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiHigh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTempLimit)).BeginInit();
+            this.pnlChart.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picChart)).BeginInit();
             this.SuspendLayout();
             // 
             // lbDevice
@@ -387,10 +393,61 @@
             this.lbHeaterl.TabIndex = 37;
             this.lbHeaterl.Text = "加热器1";
             // 
+            // pnlChart
+            // 
+            this.pnlChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlChart.BackColor = System.Drawing.Color.Transparent;
+            this.pnlChart.Controls.Add(this.picChart);
+            this.pnlChart.Controls.Add(this.lbChartTitle);
+            this.pnlChart.Controls.Add(this.btnBack);
+            this.pnlChart.Location = new System.Drawing.Point(0, 0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(386, 291);
+            this.pnlChart.TabIndex = 69;
+            this.pnlChart.Visible = false;
+            // 
+            // picChart
+            // 
+            this.picChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picChart.BackColor = System.Drawing.Color.Transparent;
+            this.picChart.Location = new System.Drawing.Point(8, 40);
+            this.picChart.Name = "picChart";
+            this.picChart.Size = new System.Drawing.Size(370, 240);
+            this.picChart.TabIndex = 2;
+            this.picChart.TabStop = false;
+            // 
+            // lbChartTitle
+            // 
+            this.lbChartTitle.AutoSize = true;
+            this.lbChartTitle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbChartTitle.Location = new System.Drawing.Point(120, 12);
+            this.lbChartTitle.Name = "lbChartTitle";
+            this.lbChartTitle.Size = new System.Drawing.Size(92, 16);
+            this.lbChartTitle.TabIndex = 1;
+            this.lbChartTitle.Text = "温度折线图";
+            // 
+            // btnBack
+            // 
+            this.btnBack.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnBack.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnBack.Location = new System.Drawing.Point(8, 8);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(65, 25);
+            this.btnBack.TabIndex = 0;
+            this.btnBack.Text = "返回";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // DevicePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.pnlChart);
             this.Controls.Add(this.lbDevice);
             this.Controls.Add(this.nUDHumiLow);
             this.Controls.Add(this.btnValueDown);
@@ -426,6 +483,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUDAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDHumiHigh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTempLimit)).EndInit();
+            this.pnlChart.ResumeLayout(false);
+            this.pnlChart.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -461,5 +521,9 @@
         private System.Windows.Forms.Label lbFan;
         private System.Windows.Forms.Label lbSensor_T;
         private System.Windows.Forms.Label lbHeaterl;
+        private System.Windows.Forms.Panel pnlChart;
+        private System.Windows.Forms.PictureBox picChart;
+        private System.Windows.Forms.Label lbChartTitle;
+        private System.Windows.Forms.Button btnBack;
     }
 }

@@ -41,7 +41,7 @@ namespace 多设备管理系统
             using (var path = CreateRoundRect(ctrl.ClientRectangle, radius))
             {
                 g.SetClip(path);
-                using (var brush = new SolidBrush(Color.FromArgb(50, 255, 255, 255))) // 白色薄雾
+                using (var brush = new SolidBrush(Color.FromArgb(80, 255, 255, 255))) // 白色薄雾
                     g.FillPath(brush, path);
                 g.ResetClip();
             }

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SQLite;
-using ClosedXML.Excel;
 
 namespace 多设备管理系统
 {
@@ -170,6 +171,33 @@ namespace 多设备管理系统
                     cmd.ExecuteNonQuery();
 
                     System.Diagnostics.Debug.WriteLine($"数据清理完毕，本次删除了 {rowsAffected} 条旧数据");
+                }
+            }
+        }
+
+        public void GetTodayData(bool isTemperature, List<(DateTime Time, float Value)> Datas)
+        { // 查询当日数据，按顺序填进两个列表（isTemperature:true查温度 false查湿度）
+            string today = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss"); // 今天0点
+            string col = isTemperature ? "temperature" : "humidity";
+            string sql = $"SELECT record_time, {col} FROM sensor_data " +
+                         $"WHERE record_time >= @today ORDER BY id";
+            using (var conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@today", today);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (DateTime.TryParse(reader[0].ToString(), out DateTime t) &&
+                                float.TryParse(reader[1].ToString(), out float v))
+                            {
+                                Datas.Add((t,v));
+                            }
+                        }
+                    }
                 }
             }
         }
