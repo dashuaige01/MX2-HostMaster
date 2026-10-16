@@ -1,4 +1,7 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +35,7 @@ namespace 多设备管理系统
         private static readonly Pen LinePen = new Pen(Color.DodgerBlue, 2f); // 数据线
         private static readonly Brush TextBrush = Brushes.Black; // 黑色笔刷
         private static readonly Font LabelFont = new Font("宋体", 12F, System.Drawing.FontStyle.Bold); // 建议使用固定字体或缓存字体对象
-
+        private int _lastChartId = 0; // 记住已经加载到哪条 id
 
         public DevicePanel(int address, Func<byte[], byte[]> sendFunc, Action<int> removeFunc)
         {
@@ -43,7 +46,7 @@ namespace 多设备管理系统
                     | ControlStyles.OptimizedDoubleBuffer // 双缓冲防闪烁
                     | ControlStyles.ResizeRedraw // 改变大小重绘
                     | ControlStyles.SupportsTransparentBackColor, true); // 允许透明
-            this.BackColor = Color.Transparent; // 背景颜色改成随父控件
+            this.BackColor = Color.Transparent; // this（DevicePanel）背景颜色改成随父控件
 
             _sendFunc = sendFunc; // 发送函数
             DeviceAddress = address; // 从机设备地址
@@ -89,8 +92,12 @@ namespace 多设备管理系统
 
             if (pnlChart.Visible)   // 图表开着就跟着最新数据走
             {
-                _chartDatas.Clear();
-                _db.GetTodayData(_chartIsTemp, _chartDatas);
+                if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
+                {
+                    _chartDatas.Clear();   // 跨天才清
+                    _lastChartId = 0;
+                }
+                _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
                 picChart.Invalidate();
             }
         }
@@ -229,11 +236,14 @@ namespace 多设备管理系统
         private void lbTempeValue_Click(object sender, EventArgs e)
         { // 点温度值 → 温度图
             _chartIsTemp = true; // 置位温度数据选择标志
-            _chartDatas.Clear(); // 清空温/湿度结构体数据：时间、温/湿度
-            _db.GetTodayData(_chartIsTemp, _chartDatas); // 获取温度当日数据
+            if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
+            {
+                _chartDatas.Clear(); // 跨天才清
+                _lastChartId = 0;
+            }
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
             lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 温度折线图"; // 折线图标题
-            foreach (Control c in Controls) // 遍历所有子设备参数控件
-                if (c != pnlChart) c.Visible = false; // 隐藏参数视图
+            pnlParams.Visible = false; // 隐藏其他非折线图控件
             pnlChart.Visible = true; // 打开图像显示窗口
             pnlChart.BringToFront(); // 
             picChart.Invalidate(); // 触发 Paint 重画
@@ -242,11 +252,14 @@ namespace 多设备管理系统
         private void lbHumiValue_Click(object sender, EventArgs e)
         { // 点湿度值 → 湿度图
             _chartIsTemp = false; // 置位湿度数据选择标志
-            _chartDatas.Clear(); // 清空温/湿度结构体数据：时间、温/湿度
-            _db.GetTodayData(_chartIsTemp, _chartDatas); // 获取当日湿度数据
+            if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
+            {
+                _chartDatas.Clear(); // 跨天才清
+                _lastChartId = 0;
+            }
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
             lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 湿度折线图"; // 折线图标题
-            foreach (Control c in Controls) // 遍历所有子设备参数控件
-                if (c != pnlChart) c.Visible = false; // 隐藏参数视图
+            pnlParams.Visible = false; // 隐藏其他非折线图控件
             pnlChart.Visible = true; // 打开图像显示窗口
             pnlChart.BringToFront();
             picChart.Invalidate(); // 触发 Paint 重画
@@ -255,8 +268,7 @@ namespace 多设备管理系统
         private void btnBack_Click(object sender, EventArgs e)
         {
             pnlChart.Visible = false;
-            foreach (Control c in Controls)
-                if (c != pnlChart) c.Visible = true;    // 恢复参数视图
+            pnlParams.Visible = true; // 恢复参数视图
         }
 
 #if false // X轴显示整天，后续增加放大显示内容功能

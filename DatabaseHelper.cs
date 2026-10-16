@@ -175,29 +175,33 @@ namespace 多设备管理系统
             }
         }
 
-        public void GetTodayData(bool isTemperature, List<(DateTime Time, float TValue, float HValue)> Datas)
+        public int GetTodayData(int lastId, List<(DateTime Time, float TValue, float HValue)> Datas)
         { // 查询当日数据，按顺序填进两个列表（isTemperature:true查温度 false查湿度）
             string today = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss"); // 今天0点
-            //string col = isTemperature ? "temperature" : "humidity"; // 区分获取的温度/湿度数据
-            string sql = $"SELECT record_time, temperature, humidity FROM sensor_data " +
-                         $"WHERE record_time >= @today ORDER BY id";
+            string sql = $"SELECT id, record_time, temperature, humidity FROM sensor_data " +
+                         $"WHERE record_time >= @today AND id > @lastId ORDER BY id";
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@today", today);
+                    cmd.Parameters.AddWithValue("@lastId", lastId); // 安全地传入 ID
                     using (var reader = cmd.ExecuteReader())
                     {
+                        int newLastId = lastId;
                         while (reader.Read())
                         {
-                            if (DateTime.TryParse(reader[0].ToString(), out DateTime t) &&
-                                float.TryParse(reader[1].ToString(), out float Tv) &&
-                                float.TryParse(reader[2].ToString(), out float Hv))
+                            int id = Convert.ToInt32(reader[0]);
+                            if (DateTime.TryParse(reader[1].ToString(), out DateTime t) &&
+                                float.TryParse(reader[2].ToString(), out float Tv) &&
+                                float.TryParse(reader[3].ToString(), out float Hv))
                             {
                                 Datas.Add((t,Tv,Hv));
+                                if (id > newLastId) newLastId = id;
                             }
                         }
+                        return newLastId; // 返回推进后的水位线
                     }
                 }
             }
