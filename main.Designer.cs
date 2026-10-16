@@ -86,6 +86,7 @@
             // 
             // btnAddDevice
             // 
+            this.btnAddDevice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddDevice.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnAddDevice.Location = new System.Drawing.Point(692, 38);
             this.btnAddDevice.Name = "btnAddDevice";
@@ -116,6 +117,7 @@
             // btnStart
             // 
             this.btnStart.BackColor = System.Drawing.Color.Transparent;
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStart.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnStart.Location = new System.Drawing.Point(583, 7);
             this.btnStart.Name = "btnStart";

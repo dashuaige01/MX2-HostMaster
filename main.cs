@@ -106,6 +106,7 @@ namespace 多设备管理系统
                     }
 
                     serialPort1.Open(); // 打开串口
+                    Device_Scan();
                     btnStart.Text = "断开"; // 切换按钮文字
                     btnStart.BackColor = Color.DodgerBlue; // 按钮变红色表示串口已打开
                     cmbSerialPort.Enabled = false; // 禁用串口号下拉框
@@ -113,6 +114,7 @@ namespace 多设备管理系统
                     cmbDataBits.Enabled = false; // 禁用数据位下拉框
                     cmbStopBits.Enabled = false; // 禁用停止位下拉框
                     cmbParity.Enabled = false; // 禁用校验位下拉框
+                    timScan.Start(); // 开启需要从机设备的定时器
                 } 
                 else if (btnStart.Text == "断开") 
                 { // 当前为关闭操作
@@ -132,9 +134,6 @@ namespace 多设备管理系统
             } catch (Exception err) { // 捕获打开/关闭串口时的异常
                 MessageBox.Show("打开失败" + err.ToString(), "提示！"); // 弹出错误提示
             }
-
-            Device_Scan();
-            timScan.Start(); // 开启需要从机设备的定时器
         }
 
         private async void timSerialPort_Tick(object sender, EventArgs e)

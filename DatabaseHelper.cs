@@ -175,11 +175,11 @@ namespace 多设备管理系统
             }
         }
 
-        public void GetTodayData(bool isTemperature, List<(DateTime Time, float Value)> Datas)
+        public void GetTodayData(bool isTemperature, List<(DateTime Time, float TValue, float HValue)> Datas)
         { // 查询当日数据，按顺序填进两个列表（isTemperature:true查温度 false查湿度）
             string today = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss"); // 今天0点
-            string col = isTemperature ? "temperature" : "humidity";
-            string sql = $"SELECT record_time, {col} FROM sensor_data " +
+            //string col = isTemperature ? "temperature" : "humidity"; // 区分获取的温度/湿度数据
+            string sql = $"SELECT record_time, temperature, humidity FROM sensor_data " +
                          $"WHERE record_time >= @today ORDER BY id";
             using (var conn = new SQLiteConnection(connectionString))
             {
@@ -192,9 +192,10 @@ namespace 多设备管理系统
                         while (reader.Read())
                         {
                             if (DateTime.TryParse(reader[0].ToString(), out DateTime t) &&
-                                float.TryParse(reader[1].ToString(), out float v))
+                                float.TryParse(reader[1].ToString(), out float Tv) &&
+                                float.TryParse(reader[2].ToString(), out float Hv))
                             {
-                                Datas.Add((t,v));
+                                Datas.Add((t,Tv,Hv));
                             }
                         }
                     }

@@ -25,7 +25,7 @@ namespace 多设备管理系统
         private DatabaseHelper _db; // 每个面板自己的数据库
         //private readonly List<DateTime> _chartTimes = new List<DateTime>(); // 时间数组
         //private readonly List<float> _chartValues = new List<float>(); // 数据数组
-        private readonly List<(DateTime Time, float Value)> _chartDatas = new List<(DateTime, float)>(); // 声明一个元组列表
+        private readonly List<(DateTime Time, float TempValue, float HumiValue)> _chartDatas = new List<(DateTime, float, float)>(); // 声明一个元组列表
         private bool _chartIsTemp; // 当前图表类型
         private static readonly Pen AxisPen = new Pen(Color.FromArgb(80, 80, 80), 2f); // 坐标轴线
         private static readonly Pen GridPen = new Pen(Color.FromArgb(60, 128, 128, 128), 1f); // 网格线
@@ -53,8 +53,6 @@ namespace 多设备管理系统
             lbDevice.Text = address.ToString(); // 设备编号
             nUDAddress.Value = address; // 从机地址默认值
 
-            lbTempeValue.Cursor = Cursors.Hand;   // 鼠标变手型，提示可点
-            lbHumiValue.Cursor = Cursors.Hand;
             picChart.Paint += picChart_Paint; // 画图
         }
 
@@ -91,7 +89,8 @@ namespace 多设备管理系统
 
             if (pnlChart.Visible)   // 图表开着就跟着最新数据走
             {
-                LoadChartData();
+                _chartDatas.Clear();
+                _db.GetTodayData(_chartIsTemp, _chartDatas);
                 picChart.Invalidate();
             }
         }
@@ -229,46 +228,38 @@ namespace 多设备管理系统
 
         private void lbTempeValue_Click(object sender, EventArgs e)
         { // 点温度值 → 温度图
-            _chartIsTemp = true;
-            LoadChartData(); // 查当日数据
-            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 温度折线图";
-            foreach (Control c in Controls)
-                if (c != pnlChart) c.Visible = false; // 藏起参数视图
-            pnlChart.Visible = true;
-            pnlChart.BringToFront();
+            _chartIsTemp = true; // 置位温度数据选择标志
+            _chartDatas.Clear(); // 清空温/湿度结构体数据：时间、温/湿度
+            _db.GetTodayData(_chartIsTemp, _chartDatas); // 获取温度当日数据
+            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 温度折线图"; // 折线图标题
+            foreach (Control c in Controls) // 遍历所有子设备参数控件
+                if (c != pnlChart) c.Visible = false; // 隐藏参数视图
+            pnlChart.Visible = true; // 打开图像显示窗口
+            pnlChart.BringToFront(); // 
             picChart.Invalidate(); // 触发 Paint 重画
         }
 
         private void lbHumiValue_Click(object sender, EventArgs e)
         { // 点湿度值 → 湿度图
-            _chartIsTemp = false;
-            LoadChartData(); // 查当日数据
-            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 湿度折线图";
-            foreach (Control c in Controls)
-                if (c != pnlChart) c.Visible = false; // 藏起参数视图
-            pnlChart.Visible = true;
+            _chartIsTemp = false; // 置位湿度数据选择标志
+            _chartDatas.Clear(); // 清空温/湿度结构体数据：时间、温/湿度
+            _db.GetTodayData(_chartIsTemp, _chartDatas); // 获取当日湿度数据
+            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 湿度折线图"; // 折线图标题
+            foreach (Control c in Controls) // 遍历所有子设备参数控件
+                if (c != pnlChart) c.Visible = false; // 隐藏参数视图
+            pnlChart.Visible = true; // 打开图像显示窗口
             pnlChart.BringToFront();
             picChart.Invalidate(); // 触发 Paint 重画
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            HideChart(); // 返回
-        }
-
-        private void HideChart()
-        {
             pnlChart.Visible = false;
             foreach (Control c in Controls)
                 if (c != pnlChart) c.Visible = true;    // 恢复参数视图
         }
 
-        private void LoadChartData()
-        {
-            _chartDatas.Clear();
-            _db.GetTodayData(_chartIsTemp, _chartDatas);
-        }
-
+#if false // X轴显示整天，后续增加放大显示内容功能
         private void picChart_Paint(object sender, PaintEventArgs e) 
         {
             var g = e.Graphics; // 获取画布
@@ -298,10 +289,21 @@ namespace 多设备管理系统
             // Y轴范围：最小~最大，上下各留10%；全相等时强行撑开
             float vMin = 100.0f;
             float vMax = 0.0f;
-            foreach (var v in _chartDatas)
-            { // 遍历当日数据库数据
-                if (v.Value < vMin) vMin = v.Value;
-                if (v.Value > vMax) vMax = v.Value;
+            if (_chartIsTemp)
+            {
+                foreach (var v in _chartDatas)
+                { // 遍历当日数据库数据
+                    if (v.TempValue < vMin) vMin = v.TempValue;
+                    if (v.TempValue > vMax) vMax = v.TempValue;
+                }
+            }
+            else
+            {
+                foreach (var v in _chartDatas)
+                { // 遍历当日数据库数据
+                    if (v.HumiValue < vMin) vMin = v.HumiValue;
+                    if (v.HumiValue > vMax) vMax = v.HumiValue;
+                }
             }
 
             float finalRange = vMax - vMin; // 预计算分母，避免后续重复减法
@@ -354,12 +356,25 @@ namespace 多设备管理系统
             var pts = new PointF[count];
 
             // 在循环中直接计算坐标，避免多次调用 Func 委托带来的开销
-            for (int i = 0; i < count; i++)
+            if (_chartIsTemp)
             {
-                double totalSeconds = (_chartDatas[i].Time - dayStart).TotalSeconds;
-                x = plot.X + (float)(totalSeconds / secondsInDay) * plot.Width;
-                y = plot.Bottom - ((_chartDatas[i].Value - vMin) / finalRange) * plotHeight;
-                pts[i] = new PointF(x, y);
+                for (int i = 0; i < count; i++)
+                {
+                    double totalSeconds = (_chartDatas[i].Time - dayStart).TotalSeconds;
+                    x = plot.X + (float)(totalSeconds / secondsInDay) * plot.Width;
+                    y = plot.Bottom - ((_chartDatas[i].TempValue - vMin) / finalRange) * plotHeight;
+                    pts[i] = new PointF(x, y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    double totalSeconds = (_chartDatas[i].Time - dayStart).TotalSeconds;
+                    x = plot.X + (float)(totalSeconds / secondsInDay) * plot.Width;
+                    y = plot.Bottom - ((_chartDatas[i].HumiValue - vMin) / finalRange) * plotHeight;
+                    pts[i] = new PointF(x, y);
+                }
             }
 
             // 绘制连线
@@ -368,5 +383,140 @@ namespace 多设备管理系统
                 g.DrawLines(LinePen, pts);
             }
         }
+#else // 按数据记录时间来选择X轴显示范围，不断增大
+        private void picChart_Paint(object sender, PaintEventArgs e) 
+        {
+            var g = e.Graphics; // 获取画布
+            g.SmoothingMode = SmoothingMode.AntiAlias; // 抗锯齿，线才平滑
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit; // 优化文字清晰度
+
+            Rectangle rect = picChart.ClientRectangle; // 获取控件的客户区矩形
+
+            if (_chartDatas == null || _chartDatas.Count <= 10)
+            { // 空数据快速返回
+                string msg = "当日暂无更多数据";
+                SizeF sz = g.MeasureString(msg, LabelFont); // 使用 MeasureString 或固定偏移确保文字真正居中
+                g.DrawString(msg, LabelFont, TextBrush,
+                    (rect.Width - sz.Width) / 2,
+                    (rect.Height - sz.Height) / 2); // 绘制文字到控件中间区域
+                return; // 不执行后面的绘图代码
+            }
+
+            // 绘图区（留出坐标轴标签的位置）
+            const int LeftMargin = 42, RightMargin = 10, TopMargin = 12, BottomMargin = 26; // 预留边距
+            int plotWidth = Math.Max(0, rect.Width - LeftMargin - RightMargin); // 新绘图区域宽度
+            int plotHeight = Math.Max(0, rect.Height - TopMargin - BottomMargin); // 新绘图区域高度
+            if (plotWidth <= 0 || plotHeight <= 0) return; // 防止控件过小导致绘图区负数
+
+            Rectangle plot = new Rectangle(LeftMargin, TopMargin, plotWidth, plotHeight); // 计算新的绘图区域
+
+            // 处理Y轴显示范围：最小~最大，上下各留10%；全相等时强行撑开
+            float vMin = float.MaxValue;
+            float vMax = float.MinValue;
+            if(_chartIsTemp)
+            {
+                foreach (var v in _chartDatas)
+                { // 遍历当日数据库数据
+                    if (v.TempValue < vMin) vMin = v.TempValue;
+                    if (v.TempValue > vMax) vMax = v.TempValue;
+                }
+            }
+            else
+            {
+                foreach (var v in _chartDatas)
+                { // 遍历当日数据库数据
+                    if (v.HumiValue < vMin) vMin = v.HumiValue;
+                    if (v.HumiValue > vMax) vMax = v.HumiValue;
+                }
+            }
+            float finalRange = vMax - vMin; // 预计算分母，避免后续重复减法
+            if (finalRange < 1.0f)
+            { // 处理数据最小显示区域
+                float center = (vMax + vMin) / 2;
+                vMin = center - 1.2f;
+                vMax = center + 1.2f;
+            }
+            else
+            { // 添加显示Padding
+                float pad = finalRange * 0.1f; // 计算显示范围内部
+                vMin -= pad;
+                vMax += pad;
+            }
+            finalRange = vMax - vMin; // 预计算分母，避免后续重复减法
+
+            // 处理X轴时间轴：最小~最大，最小间隔1小时
+            DateTime t = _chartDatas[0].Time; // 获取第一个数据时间值
+            DateTime dayStart = new DateTime(t.Year, t.Month, t.Day, t.Hour, 0, 0); // 获取第一个数据时值 
+            t = _chartDatas[_chartDatas.Count - 1].Time; // 获取最后一个数据时间值
+            DateTime hourLast = new DateTime(t.Year, t.Month, t.Day, t.Hour, 0, 0); // 获取最后一个数据时值 
+            double secondsInDay = (hourLast - dayStart).TotalSeconds;
+            if (hourLast.Hour < 24)
+            {
+                hourLast = new DateTime(hourLast.Year, hourLast.Month, hourLast.Day, hourLast.Hour + 1, 0, 0);
+            }
+            secondsInDay = (hourLast - dayStart).TotalSeconds;
+
+            // 先画所有网格线，再画所有文字，减少状态切换（虽然GDI+状态切换开销不大，但习惯要好）
+            float ratio; // 栅格线位置占比
+            float x; // 元素x轴坐标
+            float y; // 元素y轴坐标
+            SizeF labelSize; // 标签文字长度
+            int size = (hourLast.Hour - dayStart.Hour + 7 - 1) / 7;
+            for (int h = dayStart.Hour; h <= hourLast.Hour; h += size)
+            { // 绘制网格与 X 轴标签
+                ratio = (float)(h - dayStart.Hour) / (float)(hourLast.Hour - dayStart.Hour); // 计算栅格线位置占比
+                x = plot.X + ratio * plot.Width; // 计算栅格线x轴坐标
+                g.DrawLine(GridPen, x, plot.Y, x, plot.Bottom); // 绘制网格线
+
+                string label = $"{h}";
+                labelSize = g.MeasureString(label, LabelFont); // 计算字符串占用空间大小
+                g.DrawString(label, LabelFont, TextBrush, x - labelSize.Width / 2, plot.Bottom + 5); // 绘制标签
+            }
+
+            // 右对齐文本，使其紧贴轴线左侧，更美观
+            StringFormat sfRight = new StringFormat { Alignment = StringAlignment.Far };
+            g.DrawString(vMax.ToString("0.0"), LabelFont, TextBrush, new PointF(plot.X - 5, plot.Y - 2), sfRight); // 最大数据标签
+            g.DrawString(((vMin + vMax) / 2).ToString("0.0"), LabelFont, TextBrush, new PointF(plot.X - 5, plot.Y + plot.Height / 2f - 6), sfRight);
+            g.DrawString(vMin.ToString("0.0"), LabelFont, TextBrush, new PointF(plot.X - 5, plot.Bottom - 12), sfRight); // 最小数据标签
+
+            // 绘制坐标轴线
+            g.DrawLine(AxisPen, plot.X, plot.Y, plot.X, plot.Bottom); // Y轴
+            g.DrawLine(AxisPen, plot.X, plot.Bottom, plot.Right, plot.Bottom); // X轴
+
+            // 绘制折线与数据点
+            int count = _chartDatas.Count;
+            int step = Math.Max(1, count / 300); // 步长最小为1，防止数据量不足时出现除零或步长为0的异常
+            int validPointCount = (count + step - 1) / step; // 计算降采样后实际的有效点数，创建对应大小的点数组
+            var pts = new PointF[validPointCount]; // 创建对应数量数组
+            int ptIndex = 0;
+            // 统一逻辑填充点，用独立的连续下标记录点的位置，不再复用原始数据的i下标
+            if (_chartIsTemp)
+            {
+                for (int i = 0; i < count; i += step)
+                {
+                    double totalSeconds = (_chartDatas[i].Time - dayStart).TotalSeconds;
+                    x = plot.X + (float)(totalSeconds / secondsInDay) * plot.Width;
+                    y = plot.Bottom - ((_chartDatas[i].TempValue - vMin) / finalRange) * plotHeight;
+                    pts[ptIndex++] = new PointF(x, y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; i += step)
+                {
+                    double totalSeconds = (_chartDatas[i].Time - dayStart).TotalSeconds;
+                    x = plot.X + (float)(totalSeconds / secondsInDay) * plot.Width;
+                    y = plot.Bottom - ((_chartDatas[i].HumiValue - vMin) / finalRange) * plotHeight;
+                    pts[ptIndex++] = new PointF(x, y);
+                }
+            }
+
+            // 4. 绘制连线，判断有效点数大于1才执行
+            if (validPointCount > 1)
+            {
+                g.DrawLines(LinePen, pts);
+            }
+        }
+#endif
     }
 }

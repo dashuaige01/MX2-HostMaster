@@ -95,6 +95,7 @@
             // 
             // btnValueDown
             // 
+            this.btnValueDown.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnValueDown.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnValueDown.Location = new System.Drawing.Point(180, 256);
             this.btnValueDown.Name = "btnValueDown";
@@ -183,6 +184,7 @@
             // 
             // btnConfigPara
             // 
+            this.btnConfigPara.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnConfigPara.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnConfigPara.Location = new System.Drawing.Point(270, 256);
             this.btnConfigPara.Name = "btnConfigPara";
@@ -195,6 +197,7 @@
             // btnTimeCheck
             // 
             this.btnTimeCheck.BackColor = System.Drawing.Color.Red;
+            this.btnTimeCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTimeCheck.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnTimeCheck.Location = new System.Drawing.Point(90, 256);
             this.btnTimeCheck.Name = "btnTimeCheck";
@@ -267,6 +270,7 @@
             // 
             // lbHumiValue
             // 
+            this.lbHumiValue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbHumiValue.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbHumiValue.ForeColor = System.Drawing.Color.DodgerBlue;
             this.lbHumiValue.Location = new System.Drawing.Point(216, 36);
@@ -300,6 +304,7 @@
             // 
             // lbTempeValue
             // 
+            this.lbTempeValue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbTempeValue.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbTempeValue.ForeColor = System.Drawing.Color.DodgerBlue;
             this.lbTempeValue.Location = new System.Drawing.Point(50, 36);
@@ -432,6 +437,7 @@
             // 
             // btnBack
             // 
+            this.btnBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBack.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnBack.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnBack.Location = new System.Drawing.Point(8, 8);
