@@ -61,6 +61,8 @@
             this.lbHeaterlStatus = new System.Windows.Forms.Label();
             this.lbSensor_T = new System.Windows.Forms.Label();
             this.lbHeaterl = new System.Windows.Forms.Label();
+            this.btnLeft = new System.Windows.Forms.Button();
+            this.btnRight = new System.Windows.Forms.Button();
             this.pnlChart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picChart)).BeginInit();
             this.pnlParams.SuspendLayout();
@@ -76,6 +78,8 @@
             this.pnlChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlChart.Controls.Add(this.btnRight);
+            this.pnlChart.Controls.Add(this.btnLeft);
             this.pnlChart.Controls.Add(this.picChart);
             this.pnlChart.Controls.Add(this.lbChartTitle);
             this.pnlChart.Controls.Add(this.btnBack);
@@ -487,13 +491,35 @@
             this.lbHeaterl.TabIndex = 71;
             this.lbHeaterl.Text = "加热器1";
             // 
+            // btnLeft
+            // 
+            this.btnLeft.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLeft.Location = new System.Drawing.Point(85, 9);
+            this.btnLeft.Name = "btnLeft";
+            this.btnLeft.Size = new System.Drawing.Size(23, 23);
+            this.btnLeft.TabIndex = 3;
+            this.btnLeft.Text = "<";
+            this.btnLeft.UseVisualStyleBackColor = true;
+            this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
+            // 
+            // btnRight
+            // 
+            this.btnRight.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRight.Location = new System.Drawing.Point(295, 9);
+            this.btnRight.Name = "btnRight";
+            this.btnRight.Size = new System.Drawing.Size(23, 23);
+            this.btnRight.TabIndex = 4;
+            this.btnRight.Text = ">";
+            this.btnRight.UseVisualStyleBackColor = true;
+            this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
+            // 
             // DevicePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(this.pnlParams);
             this.Controls.Add(this.pnlChart);
+            this.Controls.Add(this.pnlParams);
             this.Name = "DevicePanel";
             this.Size = new System.Drawing.Size(386, 291);
             this.pnlChart.ResumeLayout(false);
@@ -544,5 +570,7 @@
         private System.Windows.Forms.Label lbHeaterlStatus;
         private System.Windows.Forms.Label lbSensor_T;
         private System.Windows.Forms.Label lbHeaterl;
+        private System.Windows.Forms.Button btnLeft;
+        private System.Windows.Forms.Button btnRight;
     }
 }

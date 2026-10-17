@@ -36,6 +36,7 @@ namespace 多设备管理系统
         private static readonly Brush TextBrush = Brushes.Black; // 黑色笔刷
         private static readonly Font LabelFont = new Font("宋体", 12F, System.Drawing.FontStyle.Bold); // 建议使用固定字体或缓存字体对象
         private int _lastChartId = 0; // 记住已经加载到哪条 id
+        private int _DaysIndex = 0; // 日期索引
 
         public DevicePanel(int address, Func<byte[], byte[]> sendFunc, Action<int> removeFunc)
         {
@@ -90,14 +91,14 @@ namespace 多设备管理系统
             _db.InsertData(DateTime.Now, DeviceAddress, temperature, humidity,
                             lbSensorStatus_T.Text, lbHeaterlStatus.Text, lbHeaterhStatus.Text); // 顺便存到自己的数据库
 
-            if (pnlChart.Visible)   // 图表开着就跟着最新数据走
+            if (pnlChart.Visible && _DaysIndex == 0)   // 图表开着就跟着最新数据走
             {
                 if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
                 {
-                    _chartDatas.Clear();   // 跨天才清
+                    _chartDatas.Clear(); // 跨天才清
                     _lastChartId = 0;
                 }
-                _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
+                _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas, _DaysIndex); // 增量追加
                 picChart.Invalidate();
             }
         }
@@ -236,13 +237,22 @@ namespace 多设备管理系统
         private void lbTempeValue_Click(object sender, EventArgs e)
         { // 点温度值 → 温度图
             _chartIsTemp = true; // 置位温度数据选择标志
+            _DaysIndex = 0;
             if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
             {
                 _chartDatas.Clear(); // 跨天才清
                 _lastChartId = 0;
             }
-            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
-            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 温度折线图"; // 折线图标题
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas, _DaysIndex); // 增量追加
+
+            int btnX = lbChartTitle.Location.X - btnLeft.Width - 5; // btnLeft和lbChartTitle隔5
+            int btnY = btnLeft.Location.Y; // 保留Y坐标
+            btnLeft.Location = new Point(btnX, btnY); // 重新设置坐标
+
+            btnX = lbChartTitle.Location.X + lbChartTitle.Width + 105; // 计算 btnRight 的 X 坐标，使其位于 lbChartTitle 右边缘偏移 5 个单位
+            btnY = btnRight.Location.Y; // 保持 btnRight 当前的 Y 坐标不变
+            btnRight.Location = new Point(btnX, btnY); // 设置 btnRight 的新位置
+
             pnlParams.Visible = false; // 隐藏其他非折线图控件
             pnlChart.Visible = true; // 打开图像显示窗口
             pnlChart.BringToFront(); // 
@@ -252,13 +262,22 @@ namespace 多设备管理系统
         private void lbHumiValue_Click(object sender, EventArgs e)
         { // 点湿度值 → 湿度图
             _chartIsTemp = false; // 置位湿度数据选择标志
+            _DaysIndex = 0;
             if (_chartDatas.Count > 0 && _chartDatas[0].Time.Date != DateTime.Today)
             {
                 _chartDatas.Clear(); // 跨天才清
                 _lastChartId = 0;
             }
-            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas); // 增量追加
-            lbChartTitle.Text = DateTime.Now.ToString("yyyy-MM-dd") + " 湿度折线图"; // 折线图标题
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas, _DaysIndex); // 增量追加
+
+            int btnX = lbChartTitle.Location.X - btnLeft.Width - 5; // btnLeft和lbChartTitle隔5
+            int btnY = btnLeft.Location.Y; // 保留Y坐标
+            btnLeft.Location = new Point(btnX, btnY); // 重新设置坐标
+
+            btnX = lbChartTitle.Location.X + lbChartTitle.Width + 105; // 计算 btnRight 的 X 坐标，使其位于 lbChartTitle 右边缘偏移 5 个单位
+            btnY = btnRight.Location.Y; // 保持 btnRight 当前的 Y 坐标不变
+            btnRight.Location = new Point(btnX, btnY); // 设置 btnRight 的新位置
+
             pnlParams.Visible = false; // 隐藏其他非折线图控件
             pnlChart.Visible = true; // 打开图像显示窗口
             pnlChart.BringToFront();
@@ -404,6 +423,16 @@ namespace 多设备管理系统
 
             Rectangle rect = picChart.ClientRectangle; // 获取控件的客户区矩形
 
+            DateTime day = DateTime.Today.AddDays(-_DaysIndex); // 显示当日数据的标题
+            if (_chartIsTemp)
+            {
+                lbChartTitle.Text = day.ToString("yyyy-MM-dd") + " 温度折线图"; // 折线图标题
+            }
+            else
+            {
+                lbChartTitle.Text = day.ToString("yyyy-MM-dd") + " 湿度折线图"; // 折线图标题
+            }
+
             if (_chartDatas == null || _chartDatas.Count <= 10)
             { // 空数据快速返回
                 string msg = "当日暂无更多数据";
@@ -425,7 +454,7 @@ namespace 多设备管理系统
             // 处理Y轴显示范围：最小~最大，上下各留10%；全相等时强行撑开
             float vMin = float.MaxValue;
             float vMax = float.MinValue;
-            if(_chartIsTemp)
+            if (_chartIsTemp)
             {
                 foreach (var v in _chartDatas)
                 { // 遍历当日数据库数据
@@ -528,6 +557,38 @@ namespace 多设备管理系统
             {
                 g.DrawLines(LinePen, pts);
             }
+        }
+
+        private void btnLeft_Click(object sender, EventArgs e)
+        {
+            if ( _DaysIndex >= 10 )
+            {
+                _DaysIndex = 10;
+            }
+            else
+            {
+                _DaysIndex++;
+            }
+            _chartDatas.Clear(); // 更换显示折线图数据
+            _lastChartId = 0; // 折线图数组长度清零
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas, _DaysIndex); // 增量追加
+            picChart.Invalidate();
+        }
+
+        private void btnRight_Click(object sender, EventArgs e)
+        {
+            if (_DaysIndex <= 0)
+            {
+                _DaysIndex = 0;
+            }
+            else
+            {
+                _DaysIndex--;
+            }
+            _chartDatas.Clear(); // 更换显示折线图数据
+            _lastChartId = 0; // 折线图数组长度清零
+            _lastChartId = _db.GetTodayData(_lastChartId, _chartDatas, _DaysIndex); // 增量追加
+            picChart.Invalidate();
         }
 #endif
     }

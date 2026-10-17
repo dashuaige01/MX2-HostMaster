@@ -73,7 +73,7 @@ namespace 多设备管理系统
                 }
                 string deleteSql = @"DELETE FROM
                     sensor_data WHERE id <= 
-                    ( SELECT id FROM sensor_data ORDER BY id DESC LIMIT 1 OFFSET 10000 )";
+                    ( SELECT id FROM sensor_data ORDER BY id DESC LIMIT 1 OFFSET 50000 )";
                 using (var deleteCmd = new SQLiteCommand(deleteSql, conn))
                     deleteCmd.ExecuteNonQuery();
             }
@@ -175,17 +175,21 @@ namespace 多设备管理系统
             }
         }
 
-        public int GetTodayData(int lastId, List<(DateTime Time, float TValue, float HValue)> Datas)
+        public int GetTodayData(int lastId, List<(DateTime Time, float TValue, float HValue)> Datas, int index)
         { // 查询当日数据，按顺序填进两个列表（isTemperature:true查温度 false查湿度）
-            string today = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss"); // 今天0点
+            DateTime dayStart = DateTime.Today.AddDays(-index); // 目标日 0 点
+            DateTime dayEnd = dayStart.AddDays(1); // 次日 0 点
+            //Console.WriteLine($"Index: {index}, Date: {day}");
             string sql = $"SELECT id, record_time, temperature, humidity FROM sensor_data " +
-                         $"WHERE record_time >= @today AND id > @lastId ORDER BY id";
+                         $"WHERE record_time >= @dayStart AND record_time < @dayEnd " +
+                         $"AND id > @lastId ORDER BY id";
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@today", today);
+                    cmd.Parameters.AddWithValue("@dayStart", dayStart.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@dayEnd", dayEnd.ToString("yyyy-MM-dd HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@lastId", lastId); // 安全地传入 ID
                     using (var reader = cmd.ExecuteReader())
                     {

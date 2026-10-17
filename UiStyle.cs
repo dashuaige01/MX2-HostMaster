@@ -14,7 +14,7 @@ namespace 多设备管理系统
         public static GraphicsPath CreateRoundRect(Rectangle r, int radius)
         // 私有静态      返回类型      函数名称   圆角矩形总边界   圆角半径
         { // 1. 生成圆角矩形路径（所有圆角逻辑的根源）
-            int d = Math.Min(radius * 2, Math.Min(r.Width, r.Height)); // 圆角直径
+            int d = Math.Max(0, Math.Min(radius * 2, Math.Min(r.Width, r.Height))); // 圆角直径
             var path = new GraphicsPath(); // 创建图形路径对象
             // 左上角X坐标, 左上角Y坐标, 宽度, 高度, 起始角度, 扫过的角度
             path.AddArc(r.X, r.Y, d, d, 180, 90); // 左上
@@ -27,6 +27,10 @@ namespace 多设备管理系统
 
         public static void ApplyRoundRegion(Control ctrl, int radius)
         { // 2. 给任意控件加圆角裁剪
+            if (ctrl.Width <= 0 || ctrl.Height <= 0)
+            {
+                return;
+            }
             var old = ctrl.Region;
             using (var path = CreateRoundRect(ctrl.ClientRectangle, radius))
                 ctrl.Region = new Region(path);
@@ -35,6 +39,10 @@ namespace 多设备管理系统
 
         public static void PaintGlassHighlight(PaintEventArgs e, Control ctrl, int radius)
         { // 顶部高光（模拟磨砂）
+            if (ctrl.Width <= 0 || ctrl.Height <= 0)
+            {
+                return;
+            }
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias; // 添加抗锯齿效果
 
@@ -50,6 +58,10 @@ namespace 多设备管理系统
         public static void DrawRoundBorder(PaintEventArgs e, Control ctrl,
                                            int radius, Color color, float width = 1f)
         { // 3. 画圆角描边（在 Paint 事件里调用）
+            if (ctrl.Width <= 0 || ctrl.Height <= 0)
+            {
+                return;
+            }
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias; // 添加抗锯齿效果
             using (var path = CreateRoundRect(ctrl.ClientRectangle, radius))
             using (var pen = new Pen(color, width))
@@ -59,7 +71,11 @@ namespace 多设备管理系统
         public static void EnableRoundCorners(Control ctrl, int radius,
                                               Color? borderColor = null)
         { // 4. 一键圆角：裁剪 + 描边 + 自动跟随尺寸变化
-          // BorderStyle 是具体控件才有的属性，基类 Control 没有，需要先判断类型
+            if (ctrl.Width <= 0 || ctrl.Height <= 0)
+            {
+                return;
+            }
+            // BorderStyle 是具体控件才有的属性，基类 Control 没有，需要先判断类型
             if (ctrl is Panel panel)
                 panel.BorderStyle = BorderStyle.None; // 去掉边框
             else if (ctrl is UserControl uc)
